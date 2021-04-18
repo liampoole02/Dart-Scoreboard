@@ -1,75 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="1">
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Player 1 Name"
-        android:layout_below="@id/spinner"
-        android:id="@+id/player1"/>
+    </LinearLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Player 1 Score"
-        android:id="@+id/player1score"
-        android:layout_below="@+id/player1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Score"
-        android:id="@+id/add1"
-        android:layout_below="@+id/player1score"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:id="@+id/player1layout">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Player 2 Name"
-        android:layout_below="@id/spinner"
-        android:id="@+id/player2"
-        android:layout_toRightOf="@+id/player1"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Player 1 Name"
+            android:id="@+id/player1"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Player 2 Score"
-        android:layout_below="@id/player2"
-        android:layout_toRightOf="@id/player1score"
-        android:id="@+id/player2score"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="Player 1 Score"
+            android:id="@+id/player1score"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/player1score"
-        android:text="Add Score"
-        android:id="@+id/add2"
-        android:layout_below="@+id/player2score"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Score"
+            android:layout_marginTop="40dp"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/add1"
-        android:hint="Score remaining"
-        android:id="@+id/player1remain"/>
+            android:id="@+id/add1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Score remaining"
-        android:layout_below="@id/add2"
-        android:layout_toRightOf="@id/player1remain"
-        android:id="@+id/player2remain"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Score remaining"
+            android:layout_marginTop="40dp"
+            android:id="@+id/player1remain"/>
 
-</RelativeLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/player2layout"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Player 2 Name"
+            android:id="@+id/player2" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="Player 2 Score"
+            android:id="@+id/player2score"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Score"
+            android:layout_marginTop="40dp"
+            android:id="@+id/add2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Score remaining"
+            android:layout_marginTop="40dp"
+            android:id="@+id/player2remain"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
