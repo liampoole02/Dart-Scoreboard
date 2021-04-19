@@ -12,6 +12,7 @@ public class Game {
         this.total2 = total2;
     }
 
+
     public int getTotal1() {
         return total1;
     }

@@ -83,67 +83,88 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         scores.setTotal1(0);
         scores.setTotal2(0);
 
+        game = Integer.parseInt(spinner.getSelectedItem().toString());
+
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game=Integer.parseInt(spinner.getSelectedItem().toString());
+                if(player1Array.size()==player2Array.size()) {
+                    total1=0;
 
-                if(player1score.getText().toString().equals("") || spinner.getSelectedItem()==null){
-                    Toast.makeText(MainActivity.this, "Please enter required fields", Toast.LENGTH_SHORT).show();
-                }else{
-                    player1Array.add(Integer.parseInt(player1score.getText().toString()));
+                    if (player1score.getText().toString().equals("") || spinner.getSelectedItem() == null) {
+                        Toast.makeText(MainActivity.this, "Please enter required fields", Toast.LENGTH_SHORT).show();
+                    } else {
+                        player1Array.add(Integer.parseInt(player1score.getText().toString()));
 
-                    for(int x: player1Array){
-                        total1=total1+x;
+                        for (int x : player1Array) {
+                            total1 = total1 + x;
+                        }
+
+                        player1remain.setText(game - total1 + "");
+
+                        scores.setTotal1(game - total1);
+                        player1score.setText("");
+
+                        if (scores.getTotal1() < scores.getTotal2()) {
+                            player1layout.setBackgroundColor(Color.GREEN);
+                            player2layout.setBackgroundColor(Color.RED);
+                        } else if(scores.getTotal1() == scores.getTotal2()){
+                            player2layout.setBackgroundColor(Color.GRAY);
+                            player1layout.setBackgroundColor(Color.GRAY);
+                        }else {
+                            player2layout.setBackgroundColor(Color.GREEN);
+                            player1layout.setBackgroundColor(Color.RED);
+                        }
                     }
-
-                    player1remain.setText(game-total1+"");
-
-                    scores.setTotal1(game-total1);
+                }else {
+                    Toast.makeText(MainActivity.this, "Player 2 turn", Toast.LENGTH_SHORT).show();
                     player1score.setText("");
-
-                    if(scores.getTotal1()<scores.getTotal2()){
-                        player1layout.setBackgroundColor(Color.GREEN);
-                        player2layout.setBackgroundColor(Color.RED);
-                    }else{
-                        player2layout.setBackgroundColor(Color.GREEN);
-                        player1layout.setBackgroundColor(Color.RED);
-                    }
                 }
+
+
             }
         });
 
         add2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game=Integer.parseInt(spinner.getSelectedItem().toString());
+                total2=0;
 
-                if(player2score.getText().toString().equals("") || spinner.getSelectedItem()==null){
+                if(player1Array.size()!=player2Array.size()) {
+
+                if (player2score.getText().toString().equals("") || spinner.getSelectedItem() == null) {
                     Toast.makeText(MainActivity.this, "Please enter required fields", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     player2Array.add(Integer.parseInt(player2score.getText().toString()));
 
-                    for(int x: player2Array){
-                        total2=total2+x;
+                    for (int x : player2Array) {
+                        total2 = total2 + x;
                     }
 
-                    player2remain.setText(game-total2+"");
-                    scores.setTotal2(game-total2);
-
-                    Toast.makeText(MainActivity.this, ""+scores.getTotal1()+" "+scores.getTotal2(), Toast.LENGTH_SHORT).show();
-
+                    player2remain.setText(game - total2 + "");
+                    scores.setTotal2(game - total2);
 
                     player2score.setText("");
 
-                    if(scores.getTotal1()<scores.getTotal2()){
+                    if (scores.getTotal1() < scores.getTotal2()) {
                         player1layout.setBackgroundColor(Color.GREEN);
                         player2layout.setBackgroundColor(Color.RED);
-                    }else{
+                    } else if(scores.getTotal1() == scores.getTotal2()){
+                        player2layout.setBackgroundColor(Color.GRAY);
+                        player1layout.setBackgroundColor(Color.GRAY);
+                    }
+                    else {
                         player2layout.setBackgroundColor(Color.GREEN);
                         player1layout.setBackgroundColor(Color.RED);
                     }
                 }
-            }
+
+
+            }else{
+                    Toast.makeText(MainActivity.this, "Player 1 turn", Toast.LENGTH_SHORT).show();
+                    player2score.setText("");
+
+                }}
         });
 
     }
