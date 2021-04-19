@@ -19,6 +19,14 @@
         android:layout_height="match_parent"
         android:layout_width="100dp"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:id="@+id/reset"
+            android:text="Reset"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -56,9 +64,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Score"
+            android:text="Deduct Score"
             android:layout_marginTop="40dp"
-
             android:id="@+id/add1" />
 
         <TextView
@@ -72,6 +79,12 @@
             android:background="@color/colorPrimaryDark"
             android:layout_marginTop="40dp"
             android:id="@+id/player1remain"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/undop1"
+            android:text="Undo"/>
 
 </LinearLayout>
 
@@ -104,7 +117,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Score"
+            android:text="Deduct Score"
             android:layout_marginTop="40dp"
             android:id="@+id/add2" />
 
@@ -119,6 +132,12 @@
             android:textColor="#FFFFFF"
             android:layout_marginTop="40dp"
             android:id="@+id/player2remain"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/undop2"
+            android:text="Undo"/>
 
     </LinearLayout>
 

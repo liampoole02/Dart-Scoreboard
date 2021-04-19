@@ -2,6 +2,7 @@ package com.example.liam.dartscoreboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private EditText player1;
@@ -29,6 +31,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private Button add1;
     private Button add2;
+    private Button reset;
+
+    private Button undop1;
+    private Button undop2;
 
     private TextView player1remain;
     private TextView player2remain;
@@ -59,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         add1=findViewById(R.id.add1);
         add2=findViewById(R.id.add2);
 
+        undop1=findViewById(R.id.undop1);
+        undop2=findViewById(R.id.undop2);
+
+        reset=findViewById(R.id.reset);
+
         spinner=findViewById(R.id.spinner);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -88,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                game = Integer.parseInt(spinner.getSelectedItem().toString());
+
                 if(player1Array.size()==player2Array.size()) {
                     total1=0;
 
@@ -130,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
                 total2=0;
 
+                game = Integer.parseInt(spinner.getSelectedItem().toString());
+
                 if(player1Array.size()!=player2Array.size()) {
 
                 if (player2score.getText().toString().equals("") || spinner.getSelectedItem() == null) {
@@ -159,12 +174,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 }
 
-
             }else{
                     Toast.makeText(MainActivity.this, "Player 1 turn", Toast.LENGTH_SHORT).show();
                     player2score.setText("");
 
                 }}
+        });
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+
+        undop1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                player1Array.remove(player1Array.size()-1);
+            }
+        });
+
+        undop2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                player2Array.remove(player2Array.size()-1);
+            }
         });
 
     }
