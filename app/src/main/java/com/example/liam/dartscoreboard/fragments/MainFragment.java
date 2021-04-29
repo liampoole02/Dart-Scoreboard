@@ -99,15 +99,11 @@ public class MainFragment extends Fragment {
         scores.setTotal1(0);
         scores.setTotal2(0);
 
-        if (getArguments() != null) {
-             totalGame = Integer.parseInt(getArguments().getString("totalGame"));
-        }else{
-            Toast.makeText(getContext(), "Null", Toast.LENGTH_SHORT).show();
-        }
-
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                final int totalGame=Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
                 if(player1Array.size()==player2Array.size()) {
                     total1=0;
@@ -153,6 +149,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 total2=0;
+
+                final int totalGame=Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
                 if(player1Array.size()!=player2Array.size()) {
 

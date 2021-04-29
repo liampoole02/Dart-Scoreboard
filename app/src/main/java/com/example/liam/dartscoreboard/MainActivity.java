@@ -10,12 +10,15 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,14 +28,18 @@ import android.widget.Toast;
 
 import com.example.liam.dartscoreboard.fragments.MainFragment;
 import com.example.liam.dartscoreboard.fragments.CalcFragment;
+import com.example.liam.dartscoreboard.fragments.ThreePlayerfragment;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Button reset;
-    Spinner spinner;
+    public static Spinner spinner;
 
     Game game;
+
+    public static int totalGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +65,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+//        totalGame=Integer.parseInt(spinner.getSelectedItem().toString());
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle.putString("totalGame", spinner.getSelectedItem().toString());
-
-                MainFragment myObj = new MainFragment();
-                myObj.setArguments(bundle);
             }
 
             @Override
@@ -75,9 +79,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         final ViewPager viewPager = findViewById(R.id.view_pager);
+
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new MainFragment(), "Users");
-        viewPagerAdapter.addFragment(new CalcFragment(), "Profile");
+
+        viewPagerAdapter.addFragment(new MainFragment(), "2P");
+        viewPagerAdapter.addFragment(new CalcFragment(), "Calc");
+        viewPagerAdapter.addFragment(new ThreePlayerfragment(), "3P");
+
         viewPager.setAdapter(viewPagerAdapter);
 
         reset.setOnClickListener(new View.OnClickListener() {
