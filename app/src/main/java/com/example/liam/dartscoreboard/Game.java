@@ -4,15 +4,25 @@ public class Game {
     private int total1;
     private int total2;
     private int total3;
+    private int gameTotal;
 
     public Game() {
 
     }
-    public Game(int total1, int total2, int total3) {
+    public Game(int total1, int total2, int total3, int gameTotal) {
         this.total1 = total1;
         this.total2 = total2;
         this.total3 = total3;
+        this.gameTotal = gameTotal;
 
+    }
+
+    public int getGameTotal() {
+        return gameTotal;
+    }
+
+    public void setGameTotal(int gameTotal) {
+        this.gameTotal = gameTotal;
     }
 
     public int getTotal3() {

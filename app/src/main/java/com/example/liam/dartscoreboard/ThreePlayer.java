@@ -159,16 +159,19 @@ public class ThreePlayer extends AppCompatActivity implements AdapterView.OnItem
 
                         player1score.setText("");
 
-//                        if (scores.getTotal1() < scores.getTotal2()) {
-//                            player1layout.setBackgroundColor(Color.GREEN);
-//                            player2layout.setBackgroundColor(Color.RED);
-//                        } else if(scores.getTotal1() == scores.getTotal2()){
-//                            player2layout.setBackgroundColor(Color.GRAY);
-//                            player1layout.setBackgroundColor(Color.GRAY);
-//                        }else {
-//                            player2layout.setBackgroundColor(Color.GREEN);
-//                            player1layout.setBackgroundColor(Color.RED);
-//                        }
+                        if (scores.getTotal1() < scores.getTotal2()) {
+                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                            player2layout.setBackgroundColor(Color.RED);
+                            if(scores.getTotal3()<scores.getTotal2()){
+
+                            }
+                        } else if(scores.getTotal1() == scores.getTotal2()){
+                            player2layout.setBackgroundColor(Color.GRAY);
+                            player1layout.setBackgroundColor(Color.GRAY);
+                        }else {
+                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                            player1layout.setBackgroundColor(Color.RED);
+                        }
                     }
 
                     player1scores.setText(""+playerScoresList(player1Array));
@@ -208,17 +211,18 @@ public class ThreePlayer extends AppCompatActivity implements AdapterView.OnItem
 
                         player2score.setText("");
 
-//                        if (scores.getTotal1() < scores.getTotal2()) {
-//                            player1layout.setBackgroundColor(Color.GREEN);
-//                            player2layout.setBackgroundColor(Color.RED);
-//                        } else if(scores.getTotal1() == scores.getTotal2()){
-//                            player2layout.setBackgroundColor(Color.GRAY);
-//                            player1layout.setBackgroundColor(Color.GRAY);
-//                        }
-//                        else {
-//                            player2layout.setBackgroundColor(Color.GREEN);
-//                            player1layout.setBackgroundColor(Color.RED);
-//                        }
+                        if (scores.getTotal1() < scores.getTotal2() && scores.getTotal3()<scores.getTotal2()) {
+                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));//blue
+                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));//green
+                            player3layout.setBackgroundColor(Color.parseColor("#E636DD"));//pink
+                        } else if(scores.getTotal1() == scores.getTotal2()){
+                            player2layout.setBackgroundColor(Color.GRAY);
+                            player1layout.setBackgroundColor(Color.GRAY);
+                        }
+                        else {
+                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        }
 
                     }
 
@@ -257,17 +261,18 @@ public class ThreePlayer extends AppCompatActivity implements AdapterView.OnItem
 
                         player3score.setText("");
 
-//                        if (scores.getTotal1() < scores.getTotal2()) {
-//                            player1layout.setBackgroundColor(Color.GREEN);
-//                            player2layout.setBackgroundColor(Color.RED);
-//                        } else if(scores.getTotal1() == scores.getTotal2()){
-//                            player2layout.setBackgroundColor(Color.GRAY);
-//                            player1layout.setBackgroundColor(Color.GRAY);
-//                        }
-//                        else {
-//                            player2layout.setBackgroundColor(Color.GREEN);
-//                            player1layout.setBackgroundColor(Color.RED);
-//                        }
+                        if (scores.getTotal1() < scores.getTotal2() && scores.getTotal3()<scores.getTotal2()) {
+                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                            player3layout.setBackgroundColor(Color.parseColor("#E636DD"));
+                        } else if(scores.getTotal1() == scores.getTotal2()){
+                            player2layout.setBackgroundColor(Color.GRAY);
+                            player1layout.setBackgroundColor(Color.GRAY);
+                        }
+                        else {
+                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        }
 
                     }
 
