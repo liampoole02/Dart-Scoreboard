@@ -8,10 +8,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -74,6 +76,10 @@ public class ThreePlayerfragment extends Fragment {
 
     private TextView leader;
 
+    private Chronometer chronometer;
+    private long pauseOffset;
+    private boolean running;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,9 +126,25 @@ public class ThreePlayerfragment extends Fragment {
         scores.setTotal2(0);
         scores.setTotal3(0);
 
+        chronometer = view.findViewById(R.id.chronometer);
+        chronometer.setFormat("Time: %s");
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                if ((SystemClock.elapsedRealtime() - chronometer.getBase()) >= 1000000000) {
+                    chronometer.setBase(SystemClock.elapsedRealtime());
+                }
+            }
+        });
+
+        startChronometer(view);
+
+
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
                 if (player1Array.size() == player2Array.size() && player2Array.size() == player3Array.size()) {
@@ -338,5 +360,24 @@ public class ThreePlayerfragment extends Fragment {
         } else {
             leader.setText("Players are equal ");
         }
+    }
+
+    public void startChronometer(View v) {
+        if (!running) {
+            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+            chronometer.start();
+            running = true;
+        }
+    }
+    public void pauseChronometer(View v) {
+        if (running) {
+            chronometer.stop();
+            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+            running = false;
+        }
+    }
+    public void resetChronometer(View v) {
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0;
     }
 }

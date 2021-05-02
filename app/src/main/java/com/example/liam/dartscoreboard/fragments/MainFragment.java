@@ -6,12 +6,17 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -22,8 +27,11 @@ import com.example.liam.dartscoreboard.Game;
 import com.example.liam.dartscoreboard.MainActivity;
 import com.example.liam.dartscoreboard.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.Timer;
 
 public class MainFragment extends Fragment {
 
@@ -62,6 +70,10 @@ public class MainFragment extends Fragment {
 
     private TextView leader;
 
+    private Chronometer chronometer;
+    private long pauseOffset;
+    private boolean running;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,6 +110,20 @@ public class MainFragment extends Fragment {
 
         scores.setTotal1(0);
         scores.setTotal2(0);
+
+        chronometer = view.findViewById(R.id.chronometer);
+        chronometer.setFormat("Time: %s");
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                if ((SystemClock.elapsedRealtime() - chronometer.getBase()) >= 1000000000) {
+                    chronometer.setBase(SystemClock.elapsedRealtime());
+                }
+            }
+        });
+
+        startChronometer(view);
 
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,5 +283,24 @@ public class MainFragment extends Fragment {
         }else{
             leader.setText("Players are equal ");
         }
+    }
+
+    public void startChronometer(View v) {
+        if (!running) {
+            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+            chronometer.start();
+            running = true;
+        }
+    }
+    public void pauseChronometer(View v) {
+        if (running) {
+            chronometer.stop();
+            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+            running = false;
+        }
+    }
+    public void resetChronometer(View v) {
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0;
     }
 }
