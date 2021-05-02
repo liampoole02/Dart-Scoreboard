@@ -67,6 +67,11 @@
                 android:id="@+id/player1score"
                 />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +79,19 @@
                 android:textColor="#FFFFFF"
                 android:background="@android:color/background_dark"
                 android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
                 android:id="@+id/add1" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zero"
+                    android:textColor="#FFFFFF"
+                    android:background="@color/colorAccent"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/deductZero1" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -135,14 +152,30 @@
                 android:id="@+id/player2score"
                 />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Deduct"
                 android:textColor="@android:color/background_light"
                 android:background="@android:color/background_dark"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:id="@+id/add2" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zero"
+                    android:textColor="#FFFFFF"
+                    android:background="@color/colorAccent"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/deductZero2"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

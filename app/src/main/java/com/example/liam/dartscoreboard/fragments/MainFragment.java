@@ -53,6 +53,9 @@ public class MainFragment extends Fragment {
     private Button undop1;
     private Button undop2;
 
+    private Button deductZero1;
+    private Button deductZero2;
+
     private TextView player1remain;
     private TextView player2remain;
 
@@ -78,35 +81,38 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        scores=new Game();
+        scores = new Game();
 
-        player1=view.findViewById(R.id.player1);
-        player2=view.findViewById(R.id.player2);
+        player1 = view.findViewById(R.id.player1);
+        player2 = view.findViewById(R.id.player2);
 
-        player1score=view.findViewById(R.id.player1score);
-        player2score=view.findViewById(R.id.player2score);
+        player1score = view.findViewById(R.id.player1score);
+        player2score = view.findViewById(R.id.player2score);
 
-        add1=view.findViewById(R.id.add1);
-        add2=view.findViewById(R.id.add2);
+        add1 = view.findViewById(R.id.add1);
+        add2 = view.findViewById(R.id.add2);
 
-        undop1=view.findViewById(R.id.undop1);
-        undop2=view.findViewById(R.id.undop2);
+        undop1 = view.findViewById(R.id.undop1);
+        undop2 = view.findViewById(R.id.undop2);
 
-        player1Array=new ArrayList();
-        player2Array=new ArrayList();
+        deductZero1 = view.findViewById(R.id.deductZero1);
+        deductZero2 = view.findViewById(R.id.deductZero2);
 
-        player1remain=view.findViewById(R.id.player1remain);
-        player2remain=view.findViewById(R.id.player2remain);
+        player1Array = new ArrayList();
+        player2Array = new ArrayList();
 
-        player1layout=view.findViewById(R.id.player1layout);
-        player2layout=view.findViewById(R.id.player2layout);
+        player1remain = view.findViewById(R.id.player1remain);
+        player2remain = view.findViewById(R.id.player2remain);
 
-        player1scores=view.findViewById(R.id.player1scores);
-        player2scores=view.findViewById(R.id.player2scores);
+        player1layout = view.findViewById(R.id.player1layout);
+        player2layout = view.findViewById(R.id.player2layout);
 
-        leader=view.findViewById(R.id.leader);
+        player1scores = view.findViewById(R.id.player1scores);
+        player2scores = view.findViewById(R.id.player2scores);
+
+        leader = view.findViewById(R.id.leader);
 
         scores.setTotal1(0);
         scores.setTotal2(0);
@@ -129,14 +135,16 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                final int totalGame=Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+                final int 
+                        totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
-                if(player1Array.size()==player2Array.size()) {
-                    total1=0;
+                if (player1Array.size() == player2Array.size()) {
+                    total1 = 0;
 
                     if (player1score.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Please enter required fields", Toast.LENGTH_SHORT).show();
                     } else {
+
                         player1Array.add(Integer.parseInt(player1score.getText().toString()));
 
                         for (int x : player1Array) {
@@ -148,21 +156,65 @@ public class MainFragment extends Fragment {
 
                         player1score.setText("");
 
-                        if (scores.getTotal1() < scores.getTotal2()) {
+                        if (scores.getTotal1() > scores.getTotal2()) {
                             player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
-                        } else if(scores.getTotal1() == scores.getTotal2()){
+                            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                        } else if (scores.getTotal1() == scores.getTotal2()) {
                             player2layout.setBackgroundColor(Color.GRAY);
                             player1layout.setBackgroundColor(Color.GRAY);
-                        }else {
+                        } else {
                             player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
                         }
                     }
 
-                    player1scores.setText(""+playerScoresList(player1Array));
+                    player1scores.setText("" + playerScoresList(player1Array));
+                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
-                }else {
+                } else {
+                    Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
+                    player1score.setText("");
+                }
+
+                leader();
+            }
+        });
+
+        deductZero1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+
+                if (player1Array.size() == player2Array.size()) {
+                    total1 = 0;
+
+                    player1Array.add(0);
+
+                    for (int x : player1Array) {
+                        total1 = total1 + x;
+                    }
+
+                    scores.setTotal1(totalGame - total1);
+                    player1remain.setText(scores.getTotal1() + "");
+
+                    player1score.setText("");
+
+                    if (scores.getTotal1() > scores.getTotal2()) {
+                        player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                    } else if (scores.getTotal1() == scores.getTotal2()) {
+                        player2layout.setBackgroundColor(Color.GRAY);
+                        player1layout.setBackgroundColor(Color.GRAY);
+                    } else {
+                        player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                    }
+
+                    player1scores.setText("" + playerScoresList(player1Array));
+                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+
+                } else {
                     Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
                     player1score.setText("");
                 }
@@ -174,11 +226,11 @@ public class MainFragment extends Fragment {
         add2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                total2=0;
+                total2 = 0;
 
-                final int totalGame=Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
-                if(player1Array.size()!=player2Array.size()) {
+                if (player1Array.size() != player2Array.size()) {
 
                     if (player2score.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Please enter required fields", Toast.LENGTH_SHORT).show();
@@ -196,22 +248,22 @@ public class MainFragment extends Fragment {
 
                         if (scores.getTotal1() < scores.getTotal2()) {
                             player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
-                        } else if(scores.getTotal1() == scores.getTotal2()){
+                            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                        } else if (scores.getTotal1() == scores.getTotal2()) {
                             player2layout.setBackgroundColor(Color.GRAY);
                             player1layout.setBackgroundColor(Color.GRAY);
-                        }
-                        else {
-                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#3698E6"));
+                        } else {
+                            player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                            player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
                         }
                     }
 
-                    player2scores.setText(""+playerScoresList(player2Array));
+                    player2scores.setText("" + playerScoresList(player2Array));
+                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                     leader();
 
-                }else{
+                } else {
                     Toast.makeText(getContext(), "Player 1 turn", Toast.LENGTH_SHORT).show();
                     player2score.setText("");
 
@@ -219,23 +271,69 @@ public class MainFragment extends Fragment {
             }
         });
 
+        deductZero2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                total2 = 0;
+
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+
+                if (player1Array.size() != player2Array.size()) {
+                    player2Array.add(0);
+
+                    for (int x : player2Array) {
+                        total2 = total2 + x;
+                    }
+
+                    scores.setTotal2(totalGame - total2);
+                    player2remain.setText(scores.getTotal2() + "");
+
+                    player2score.setText("");
+
+                    if (scores.getTotal1() < scores.getTotal2()) {
+                        player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                    } else if (scores.getTotal1() == scores.getTotal2()) {
+                        player2layout.setBackgroundColor(Color.GRAY);
+                        player1layout.setBackgroundColor(Color.GRAY);
+                    } else {
+                        player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                    }
+                }
+
+                player2scores.setText("" + playerScoresList(player2Array));
+                Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+
+                leader();
+            }
+        });
+
         undop1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                total1=0;
+                total1 = 0;
 
-                player1Array.remove(player1Array.size()-1);
+                if (player1Array.size() != 0) {
 
-                for (int x : player1Array) {
-                    total1 = total1 + x;
+                    player1Array.remove(player1Array.size() - 1);
+
+                    for (int x : player1Array) {
+                        total1 = total1 + x;
+                    }
+
+                    scores.setTotal1(totalGame - total1);
+                    player1remain.setText(scores.getTotal1() + "");
+
+                    player1scores.setText("" + playerScoresList(player1Array));
+
+                    Toast.makeText(getContext(), "Undo success, Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "Cannot remove because there are no scores present", Toast.LENGTH_LONG).show();
+
                 }
 
-                scores.setTotal1(totalGame - total1);
-                player1remain.setText(scores.getTotal1() + "");
-
-                player1scores.setText(""+playerScoresList(player1Array));
-
-                Toast.makeText(getContext(), "Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
 
             }
 
@@ -244,20 +342,26 @@ public class MainFragment extends Fragment {
         undop2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                total2=0;
+                total2 = 0;
 
-                player2Array.remove(player2Array.size()-1);
+                if (player2Array.size() != 0) {
+                    player2Array.remove(player2Array.size() - 1);
 
-                for (int x : player2Array) {
-                    total2 = total2 + x;
+                    for (int x : player2Array) {
+                        total2 = total2 + x;
+                    }
+
+                    scores.setTotal2(totalGame - total2);
+                    player2remain.setText(scores.getTotal2() + "");
+
+                    player2scores.setText("" + playerScoresList(player2Array));
+
+                    Toast.makeText(getContext(), "Undo success, Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "Cannot remove because there are no scores present", Toast.LENGTH_LONG).show();
+
                 }
 
-                scores.setTotal2(totalGame-total2);
-                player2remain.setText(scores.getTotal2() + "");
-
-                player2scores.setText(""+playerScoresList(player2Array));
-
-                Toast.makeText(getContext(), "Player 2 turn, enter correct score", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -265,22 +369,22 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    public String playerScoresList(ArrayList<Integer> a ){
+    public String playerScoresList(ArrayList<Integer> a) {
         List<Integer> tail = a.subList(Math.max(a.size() - 5, 0), a.size());
 
-        String t="";
-        for (int strTemp : tail){
-            t=t+" > "+strTemp;
+        String t = "";
+        for (int strTemp : tail) {
+            t = t + " > " + strTemp;
         }
         return t;
     }
 
-    public void leader(){
-        if(total1>total2){
-            leader.setText(player1.getText()+" Leading by "+ (total1-total2) );
-        }else if (total1<total2){
-            leader.setText(player2.getText()+" Leading by "+ (total2-total1) );
-        }else{
+    public void leader() {
+        if (total1 > total2) {
+            leader.setText(player1.getText() + " Leading by " + (total1 - total2));
+        } else if (total1 < total2) {
+            leader.setText(player2.getText() + " Leading by " + (total2 - total1));
+        } else {
             leader.setText("Players are equal ");
         }
     }
@@ -292,6 +396,7 @@ public class MainFragment extends Fragment {
             running = true;
         }
     }
+
     public void pauseChronometer(View v) {
         if (running) {
             chronometer.stop();
@@ -299,6 +404,7 @@ public class MainFragment extends Fragment {
             running = false;
         }
     }
+
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;

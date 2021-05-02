@@ -58,6 +58,10 @@ public class ThreePlayerfragment extends Fragment {
     private Button undop2;
     private Button undop3;
 
+    private Button deductZero1;
+    private Button deductZero2;
+    private Button deductZero3;
+
     private TextView player1remain;
     private TextView player2remain;
     private TextView player3remain;
@@ -103,6 +107,10 @@ public class ThreePlayerfragment extends Fragment {
         undop1 = view.findViewById(R.id.undop1);
         undop2 = view.findViewById(R.id.undop2);
         undop3 = view.findViewById(R.id.undop3);
+
+        deductZero1 = view.findViewById(R.id.deductZero1);
+        deductZero2 = view.findViewById(R.id.deductZero2);
+        deductZero3 = view.findViewById(R.id.deductZero3);
 
         player1Array = new ArrayList();
         player2Array = new ArrayList();
@@ -161,6 +169,7 @@ public class ThreePlayerfragment extends Fragment {
 
                         scores.setTotal1(totalGame - total1);
                         player1remain.setText(scores.getTotal1() + "");
+                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                         player1score.setText("");
 
@@ -177,6 +186,38 @@ public class ThreePlayerfragment extends Fragment {
                 }
 
 //                leader();
+            }
+        });
+
+        deductZero1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+
+                if (player1Array.size() == player2Array.size() && player2Array.size() == player3Array.size()) {
+                    total1 = 0;
+
+                        player1Array.add(0);
+
+                        for (int x : player1Array) {
+                            total1 = total1 + x;
+                        }
+
+                        scores.setTotal1(totalGame - total1);
+                        player1remain.setText(scores.getTotal1() + "");
+                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+
+                        player1score.setText("");
+
+                    player1scores.setText("" + playerScoresList(player1Array));
+
+                } else if (player1Array.size() > player2Array.size()) {
+                    Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
+                    player1score.setText("");
+                } else {
+                    Toast.makeText(getContext(), "Player 3 turn", Toast.LENGTH_SHORT).show();
+                    player1score.setText("");
+                }
             }
         });
 
@@ -200,10 +241,44 @@ public class ThreePlayerfragment extends Fragment {
 
                         scores.setTotal2(totalGame - total2);
                         player2remain.setText(scores.getTotal2() + "");
+                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                         player2score.setText("");
 
                     }
+
+                    player2scores.setText("" + playerScoresList(player2Array));
+
+//                    leader();
+
+                } else {
+                    Toast.makeText(getContext(), "Player 3 turn", Toast.LENGTH_SHORT).show();
+                    player2score.setText("");
+
+                }
+            }
+        });
+
+        deductZero2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                total2 = 0;
+
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+
+                if (player1Array.size() != player2Array.size()) {
+
+                        player2Array.add(0);
+
+                        for (int x : player2Array) {
+                            total2 = total2 + x;
+                        }
+
+                        scores.setTotal2(totalGame - total2);
+                        player2remain.setText(scores.getTotal2() + "");
+                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+
+                        player2score.setText("");
 
                     player2scores.setText("" + playerScoresList(player2Array));
 
@@ -226,9 +301,6 @@ public class ThreePlayerfragment extends Fragment {
 
                 if (player2Array.size() > player3Array.size()) {
 
-                    if (player3score.getText().toString().equals("") || MainActivity.spinner.getSelectedItem() == null) {
-                        Toast.makeText(getContext(), "Please enter required fields", Toast.LENGTH_SHORT).show();
-                    } else {
                         player3Array.add(Integer.parseInt(player3score.getText().toString()));
 
                         for (int x : player3Array) {
@@ -237,10 +309,39 @@ public class ThreePlayerfragment extends Fragment {
 
                         scores.setTotal3(totalGame - total3);
                         player3remain.setText(scores.getTotal3() + "");
+                       Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                         player3score.setText("");
 
+                    player3scores.setText("" + playerScoresList(player3Array));
+
+                } else {
+                    Toast.makeText(getContext(), "Player 1 turn", Toast.LENGTH_SHORT).show();
+                    player3score.setText("");
+
+                }
+            }
+        });
+
+        deductZero3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                total3 = 0;
+
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+
+                if (player2Array.size() > player3Array.size()) {
+
+                    player3Array.add(0);
+
+                    for (int x : player3Array) {
+                        total3 = total3 + x;
                     }
+
+                    scores.setTotal3(totalGame - total3);
+                    player3remain.setText(scores.getTotal3() + "");
+
+                    player3score.setText("");
 
                     player3scores.setText("" + playerScoresList(player3Array));
 
