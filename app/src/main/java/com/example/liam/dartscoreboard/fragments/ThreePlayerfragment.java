@@ -1,5 +1,6 @@
 package com.example.liam.dartscoreboard.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -43,6 +45,10 @@ public class ThreePlayerfragment extends Fragment {
     private TextView player1scores;
     private TextView player2scores;
     private TextView player3scores;
+
+    private TextView player1average;
+    private TextView player2average;
+    private TextView player3average;
 
     private ArrayList<Integer> player1Array;
     private ArrayList<Integer> player2Array;
@@ -124,6 +130,10 @@ public class ThreePlayerfragment extends Fragment {
         player2layout = view.findViewById(R.id.player2layout);
         player3layout = view.findViewById(R.id.player3layout);
 
+        player1average = view.findViewById(R.id.player1average);
+        player2average = view.findViewById(R.id.player2average);
+        player3average = view.findViewById(R.id.player3average);
+
         player1scores = view.findViewById(R.id.player1scores);
         player2scores = view.findViewById(R.id.player2scores);
         player3scores = view.findViewById(R.id.player3scores);
@@ -171,6 +181,12 @@ public class ThreePlayerfragment extends Fragment {
                         player1remain.setText(scores.getTotal1() + "");
                         Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
+                        if (scores.getTotal1() != 0) {
+
+                            player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                        }
+                        hideKeyboard(getActivity());
+
                         player1score.setText("");
 
                     }
@@ -205,6 +221,10 @@ public class ThreePlayerfragment extends Fragment {
 
                         scores.setTotal1(totalGame - total1);
                         player1remain.setText(scores.getTotal1() + "");
+                    if (scores.getTotal1() != 0) {
+
+                        player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                    }
                         Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                         player1score.setText("");
@@ -241,6 +261,12 @@ public class ThreePlayerfragment extends Fragment {
 
                         scores.setTotal2(totalGame - total2);
                         player2remain.setText(scores.getTotal2() + "");
+                        if (scores.getTotal2() != 0) {
+
+                            player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
+                        }
+                        hideKeyboard(getActivity());
+
                         Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                         player2score.setText("");
@@ -277,7 +303,10 @@ public class ThreePlayerfragment extends Fragment {
                         scores.setTotal2(totalGame - total2);
                         player2remain.setText(scores.getTotal2() + "");
                     Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                    if (scores.getTotal2() != 0) {
 
+                        player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
+                    }
                         player2score.setText("");
 
                     player2scores.setText("" + playerScoresList(player2Array));
@@ -310,6 +339,11 @@ public class ThreePlayerfragment extends Fragment {
                         scores.setTotal3(totalGame - total3);
                         player3remain.setText(scores.getTotal3() + "");
                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                    if (scores.getTotal3() != 0) {
+
+                        player3average.setText("Average per turn: " + (totalGame - scores.getTotal3()) / player3Array.size());
+                    }
+                    hideKeyboard(getActivity());
 
                         player3score.setText("");
 
@@ -341,6 +375,10 @@ public class ThreePlayerfragment extends Fragment {
                     scores.setTotal3(totalGame - total3);
                     player3remain.setText(scores.getTotal3() + "");
 
+                    if (scores.getTotal3() != 0) {
+
+                        player3average.setText("Average per turn: " + (totalGame - scores.getTotal3()) / player3Array.size());
+                    }
                     player3score.setText("");
 
                     player3scores.setText("" + playerScoresList(player3Array));
@@ -370,6 +408,10 @@ public class ThreePlayerfragment extends Fragment {
 
                 player1scores.setText("" + playerScoresList(player1Array));
 
+                if (scores.getTotal1() != 0) {
+                    player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                }
+
                 Toast.makeText(getContext(), "Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
 
             }
@@ -392,6 +434,9 @@ public class ThreePlayerfragment extends Fragment {
 
                 player2scores.setText("" + playerScoresList(player2Array));
 
+                if (scores.getTotal2() != 0) {
+                    player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
+                }
                 Toast.makeText(getContext(), "Player 2 turn, enter correct score", Toast.LENGTH_LONG).show();
 
             }
@@ -412,7 +457,10 @@ public class ThreePlayerfragment extends Fragment {
                 player3remain.setText(scores.getTotal3() + "");
 
                 player3scores.setText("" + playerScoresList(player3Array));
+                if (scores.getTotal3() != 0) {
 
+                    player3average.setText("Average per turn: " + (totalGame - scores.getTotal3()) / player3Array.size());
+                }
                 Toast.makeText(getContext(), "Player 3 turn, enter correct score", Toast.LENGTH_LONG).show();
 
             }
@@ -480,5 +528,16 @@ public class ThreePlayerfragment extends Fragment {
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

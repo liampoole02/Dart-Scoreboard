@@ -1,7 +1,9 @@
 package com.example.liam.dartscoreboard.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,6 +47,9 @@ public class MainFragment extends Fragment {
     private TextView player1scores;
     private TextView player2scores;
 
+    private TextView player1average;
+    private TextView player2average;
+
     private ArrayList<Integer> player1Array;
     private ArrayList<Integer> player2Array;
 
@@ -61,8 +67,6 @@ public class MainFragment extends Fragment {
 
     private LinearLayout player1layout;
     private LinearLayout player2layout;
-
-    private int game;
 
     private int total1;
     private int total2;
@@ -106,6 +110,9 @@ public class MainFragment extends Fragment {
         player1remain = view.findViewById(R.id.player1remain);
         player2remain = view.findViewById(R.id.player2remain);
 
+        player1average = view.findViewById(R.id.player1average);
+        player2average = view.findViewById(R.id.player2average);
+
         player1layout = view.findViewById(R.id.player1layout);
         player2layout = view.findViewById(R.id.player2layout);
 
@@ -135,8 +142,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                final int 
-                        totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
+                final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
                 if (player1Array.size() == player2Array.size()) {
                     total1 = 0;
@@ -167,6 +173,11 @@ public class MainFragment extends Fragment {
                             player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
                         }
                     }
+
+                    if (scores.getTotal1() != 0) {
+                        player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                    }
+                    hideKeyboard(getActivity());
 
                     player1scores.setText("" + playerScoresList(player1Array));
                     Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
@@ -201,8 +212,8 @@ public class MainFragment extends Fragment {
                     player1score.setText("");
 
                     if (scores.getTotal1() > scores.getTotal2()) {
-                        player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                        player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+                        player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+                        player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
                     } else if (scores.getTotal1() == scores.getTotal2()) {
                         player2layout.setBackgroundColor(Color.GRAY);
                         player1layout.setBackgroundColor(Color.GRAY);
@@ -212,6 +223,10 @@ public class MainFragment extends Fragment {
                     }
 
                     player1scores.setText("" + playerScoresList(player1Array));
+                    if (scores.getTotal1() != 0) {
+
+                        player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                    }
                     Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                 } else {
@@ -258,7 +273,13 @@ public class MainFragment extends Fragment {
                         }
                     }
 
-                    player2scores.setText("" + playerScoresList(player2Array));
+                    if (scores.getTotal2() != 0) {
+
+                        player2scores.setText("" + playerScoresList(player2Array));
+                    }
+                    hideKeyboard(getActivity());
+
+                    player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
                     Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                     leader();
@@ -304,6 +325,11 @@ public class MainFragment extends Fragment {
                 }
 
                 player2scores.setText("" + playerScoresList(player2Array));
+
+                if (scores.getTotal2() != 0) {
+                    player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
+                }
+
                 Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
                 leader();
@@ -325,12 +351,15 @@ public class MainFragment extends Fragment {
 
                     scores.setTotal1(totalGame - total1);
                     player1remain.setText(scores.getTotal1() + "");
+                    if (scores.getTotal1() != 0) {
 
+                        player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                    }
                     player1scores.setText("" + playerScoresList(player1Array));
 
                     Toast.makeText(getContext(), "Undo success, Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getContext(), "Cannot remove because there are no scores present", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Cannot undo because there are no scores present", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -353,12 +382,16 @@ public class MainFragment extends Fragment {
 
                     scores.setTotal2(totalGame - total2);
                     player2remain.setText(scores.getTotal2() + "");
+                    if (scores.getTotal1() != 0) {
 
+
+                        player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
+                    }
                     player2scores.setText("" + playerScoresList(player2Array));
 
                     Toast.makeText(getContext(), "Undo success, Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getContext(), "Cannot remove because there are no scores present", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Cannot undo because there are no scores present", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -408,5 +441,16 @@ public class MainFragment extends Fragment {
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
