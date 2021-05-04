@@ -1,15 +1,14 @@
 package com.example.liam.dartscoreboard.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,13 @@ import android.widget.Toast;
 import com.example.liam.dartscoreboard.Game;
 import com.example.liam.dartscoreboard.MainActivity;
 import com.example.liam.dartscoreboard.R;
-import com.example.liam.dartscoreboard.ThreePlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 
 public class ThreePlayerfragment extends Fragment {
@@ -58,8 +60,6 @@ public class ThreePlayerfragment extends Fragment {
     private Button add2;
     private Button add3;
 
-    private Button reset;
-
     private Button undop1;
     private Button undop2;
     private Button undop3;
@@ -84,11 +84,13 @@ public class ThreePlayerfragment extends Fragment {
 
     private Game scores;
 
-    private TextView leader;
+//    private TextView leader;
 
     private Chronometer chronometer;
     private long pauseOffset;
     private boolean running;
+
+    private TextToSpeech mTTS;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,7 +140,7 @@ public class ThreePlayerfragment extends Fragment {
         player2scores = view.findViewById(R.id.player2scores);
         player3scores = view.findViewById(R.id.player3scores);
 
-        leader = view.findViewById(R.id.leader);
+//        leader = view.findViewById(R.id.leader);
 
         scores.setTotal1(0);
         scores.setTotal2(0);
@@ -158,6 +160,20 @@ public class ThreePlayerfragment extends Fragment {
 
         startChronometer(view);
 
+        mTTS = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if (i == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(Locale.UK);
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    }
+                } else {
+                    Log.e("TTS", "Failed");
+                }
+            }
+        });
 
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,14 +195,12 @@ public class ThreePlayerfragment extends Fragment {
 
                         scores.setTotal1(totalGame - total1);
                         player1remain.setText(scores.getTotal1() + "");
-                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                        mTTS.speak(player1Array.get(player1Array.size() - 1) + "Deducted", TextToSpeech.QUEUE_FLUSH, null);
 
                         if (scores.getTotal1() != 0) {
-
                             player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                         }
                         hideKeyboard(getActivity());
-
                         player1score.setText("");
 
                     }
@@ -200,9 +214,9 @@ public class ThreePlayerfragment extends Fragment {
                     Toast.makeText(getContext(), "Player 3 turn", Toast.LENGTH_SHORT).show();
                     player1score.setText("");
                 }
-
-//                leader();
-            }
+                setColors();
+                setLowest();
+                setMiddleColor();            }
         });
 
         deductZero1.setOnClickListener(new View.OnClickListener() {
@@ -213,22 +227,21 @@ public class ThreePlayerfragment extends Fragment {
                 if (player1Array.size() == player2Array.size() && player2Array.size() == player3Array.size()) {
                     total1 = 0;
 
-                        player1Array.add(0);
+                    player1Array.add(0);
 
-                        for (int x : player1Array) {
-                            total1 = total1 + x;
-                        }
+                    for (int x : player1Array) {
+                        total1 = total1 + x;
+                    }
 
-                        scores.setTotal1(totalGame - total1);
-                        player1remain.setText(scores.getTotal1() + "");
+                    scores.setTotal1(totalGame - total1);
+                    player1remain.setText(scores.getTotal1() + "");
+
                     if (scores.getTotal1() != 0) {
-
                         player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                     }
-                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
 
-                        player1score.setText("");
-
+                    mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
+                    player1score.setText("");
                     player1scores.setText("" + playerScoresList(player1Array));
 
                 } else if (player1Array.size() > player2Array.size()) {
@@ -266,23 +279,21 @@ public class ThreePlayerfragment extends Fragment {
                             player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
                         }
                         hideKeyboard(getActivity());
-
-                        Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
-
+                        mTTS.speak(player2Array.get(player2Array.size() - 1) + "Deducted", TextToSpeech.QUEUE_FLUSH, null);
                         player2score.setText("");
-
                     }
 
                     player2scores.setText("" + playerScoresList(player2Array));
 
-//                    leader();
 
                 } else {
                     Toast.makeText(getContext(), "Player 3 turn", Toast.LENGTH_SHORT).show();
                     player2score.setText("");
 
                 }
-            }
+                setColors();
+                setLowest();
+                setMiddleColor();            }
         });
 
         deductZero2.setOnClickListener(new View.OnClickListener() {
@@ -294,24 +305,22 @@ public class ThreePlayerfragment extends Fragment {
 
                 if (player1Array.size() != player2Array.size()) {
 
-                        player2Array.add(0);
+                    player2Array.add(0);
 
-                        for (int x : player2Array) {
-                            total2 = total2 + x;
-                        }
+                    for (int x : player2Array) {
+                        total2 = total2 + x;
+                    }
 
-                        scores.setTotal2(totalGame - total2);
-                        player2remain.setText(scores.getTotal2() + "");
-                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                    scores.setTotal2(totalGame - total2);
+                    player2remain.setText(scores.getTotal2() + "");
+                    mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
                     if (scores.getTotal2() != 0) {
 
                         player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
                     }
-                        player2score.setText("");
+                    player2score.setText("");
 
                     player2scores.setText("" + playerScoresList(player2Array));
-
-//                    leader();
 
                 } else {
                     Toast.makeText(getContext(), "Player 3 turn", Toast.LENGTH_SHORT).show();
@@ -330,31 +339,33 @@ public class ThreePlayerfragment extends Fragment {
 
                 if (player2Array.size() > player3Array.size()) {
 
-                        player3Array.add(Integer.parseInt(player3score.getText().toString()));
+                    player3Array.add(Integer.parseInt(player3score.getText().toString()));
 
-                        for (int x : player3Array) {
-                            total3 = total3 + x;
-                        }
+                    for (int x : player3Array) {
+                        total3 = total3 + x;
+                    }
 
-                        scores.setTotal3(totalGame - total3);
-                        player3remain.setText(scores.getTotal3() + "");
-                       Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                    scores.setTotal3(totalGame - total3);
+
+                    player3remain.setText(scores.getTotal3() + "");
+
+                    mTTS.speak(player3Array.get(player3Array.size() - 1) + "Deducted", TextToSpeech.QUEUE_FLUSH, null);
+
                     if (scores.getTotal3() != 0) {
-
                         player3average.setText("Average per turn: " + (totalGame - scores.getTotal3()) / player3Array.size());
                     }
+
                     hideKeyboard(getActivity());
-
-                        player3score.setText("");
-
+                    player3score.setText("");
                     player3scores.setText("" + playerScoresList(player3Array));
-
                 } else {
                     Toast.makeText(getContext(), "Player 1 turn", Toast.LENGTH_SHORT).show();
                     player3score.setText("");
 
                 }
-            }
+                setColors();
+                setLowest();
+                setMiddleColor();            }
         });
 
         deductZero3.setOnClickListener(new View.OnClickListener() {
@@ -374,13 +385,13 @@ public class ThreePlayerfragment extends Fragment {
 
                     scores.setTotal3(totalGame - total3);
                     player3remain.setText(scores.getTotal3() + "");
+                    mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
 
                     if (scores.getTotal3() != 0) {
-
                         player3average.setText("Average per turn: " + (totalGame - scores.getTotal3()) / player3Array.size());
                     }
-                    player3score.setText("");
 
+                    player3score.setText("");
                     player3scores.setText("" + playerScoresList(player3Array));
 
                 } else {
@@ -412,7 +423,7 @@ public class ThreePlayerfragment extends Fragment {
                     player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                 }
 
-                Toast.makeText(getContext(), "Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
+                mTTS.speak("Undo success, now enter the correct score, do it now", TextToSpeech.QUEUE_FLUSH, null);
 
             }
 
@@ -437,7 +448,7 @@ public class ThreePlayerfragment extends Fragment {
                 if (scores.getTotal2() != 0) {
                     player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
                 }
-                Toast.makeText(getContext(), "Player 2 turn, enter correct score", Toast.LENGTH_LONG).show();
+                mTTS.speak("Undo success, now enter the correct score, do it now", TextToSpeech.QUEUE_FLUSH, null);
 
             }
         });
@@ -457,11 +468,11 @@ public class ThreePlayerfragment extends Fragment {
                 player3remain.setText(scores.getTotal3() + "");
 
                 player3scores.setText("" + playerScoresList(player3Array));
-                if (scores.getTotal3() != 0) {
 
+                if (scores.getTotal3() != 0) {
                     player3average.setText("Average per turn: " + (totalGame - scores.getTotal3()) / player3Array.size());
                 }
-                Toast.makeText(getContext(), "Player 3 turn, enter correct score", Toast.LENGTH_LONG).show();
+                mTTS.speak("Undo success, now enter the correct score, do it now", TextToSpeech.QUEUE_FLUSH, null);
 
             }
         });
@@ -469,26 +480,94 @@ public class ThreePlayerfragment extends Fragment {
         return view;
     }
 
-    public static int largest(int first, int second, int third) {
-        int max = first;
-        if (second > max) {
-            max = second;
+    public void setColors() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("1", scores.getTotal1());
+        map.put("2", scores.getTotal2());
+        map.put("3", scores.getTotal3());
+
+        if (getMapKeyWithHighestValue(map).equals("1")) {
+            player1layout.setBackgroundColor(Color.RED);
+        } else if (getMapKeyWithHighestValue(map).equals("2")) {
+            player2layout.setBackgroundColor(Color.RED);
+        } else {
+            player3layout.setBackgroundColor(Color.RED);
         }
-        if (third > max) {
-            max = third;
-        }
-        return max;
     }
 
-    public static int smallest(int first, int second, int third) {
-        int min = first;
-        if (second < min) {
-            min = second;
+    public void setLowest() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("1", scores.getTotal1());
+        map.put("2", scores.getTotal2());
+        map.put("3", scores.getTotal3());
+
+        if (getMapKeyWithLowestValue(map).equals("1")) {
+            player1layout.setBackgroundColor(Color.GREEN);
+        } else if (getMapKeyWithLowestValue(map).equals("2")) {
+            player2layout.setBackgroundColor(Color.GREEN);
+        } else {
+            player3layout.setBackgroundColor(Color.GREEN);
         }
-        if (third < min) {
-            min = third;
+    }
+
+    public String getMapKeyWithHighestValue(HashMap<String, Integer> map) {
+        String keyWithHighestVal = "";
+
+        // getting the maximum value in the Hashmap
+        int maxValueInMap = (Collections.max(map.values()));
+
+        //iterate through the map to get the key that corresponds to the maximum value in the Hashmap
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {  // Iterate through hashmap
+            if (entry.getValue() == maxValueInMap) {
+                keyWithHighestVal = entry.getKey();     // this is the key which has the max value
+            }
+
         }
-        return min;
+        return keyWithHighestVal;
+    }
+
+    public void setMiddleColor() {
+        ArrayList<String> a=new ArrayList<>();
+
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("1", scores.getTotal1());
+        map.put("2", scores.getTotal2());
+        map.put("3", scores.getTotal3());
+
+        a.add(getMapKeyWithHighestValue(map));
+        a.add(getMapKeyWithLowestValue(map));
+
+        if(!a.contains("1")){
+            player1layout.setBackgroundColor(Color.YELLOW);
+        }else if(!a.contains("2")){
+            player2layout.setBackgroundColor(Color.YELLOW);
+        }else if(!a.contains("3")){
+            player3layout.setBackgroundColor(Color.YELLOW);
+        }
+    }
+
+    public void setMiddlePlayerColor() {
+        if (scores.getTotal3() > scores.getTotal2() && scores.getTotal1() < scores.getTotal2()) {
+            player2layout.setBackgroundColor(Color.YELLOW);
+        } else if (scores.getTotal3() < scores.getTotal2() && scores.getTotal1() > scores.getTotal2()) {
+            player2layout.setBackgroundColor(Color.YELLOW);
+        }
+    }
+
+    public String getMapKeyWithLowestValue(HashMap<String, Integer> map) {
+        String keyWithLowestVal = "";
+
+        // getting the maximum value in the Hashmap
+        int maxValueInMap = (Collections.min(map.values()));
+
+        //iterate through the map to get the key that corresponds to the maximum value in the Hashmap
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {  // Iterate through hashmap
+            if (entry.getValue() == maxValueInMap) {
+                keyWithLowestVal = entry.getKey();     // this is the key which has the max value
+            }
+
+        }
+        return keyWithLowestVal;
     }
 
     public String playerScoresList(ArrayList<Integer> a) {
@@ -501,33 +580,12 @@ public class ThreePlayerfragment extends Fragment {
         return t;
     }
 
-    public void leader() {
-        if (total1 > total2) {
-            leader.setText(player1.getText() + " Leading by " + (total1 - total2));
-        } else if (total1 < total2) {
-            leader.setText(player2.getText() + " Leading by " + (total2 - total1));
-        } else {
-            leader.setText("Players are equal ");
-        }
-    }
-
     public void startChronometer(View v) {
         if (!running) {
             chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             chronometer.start();
             running = true;
         }
-    }
-    public void pauseChronometer(View v) {
-        if (running) {
-            chronometer.stop();
-            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
-            running = false;
-        }
-    }
-    public void resetChronometer(View v) {
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffset = 0;
     }
 
     public static void hideKeyboard(Activity activity) {

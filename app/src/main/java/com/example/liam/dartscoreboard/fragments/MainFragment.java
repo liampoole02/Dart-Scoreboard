@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +31,12 @@ import com.example.liam.dartscoreboard.Game;
 import com.example.liam.dartscoreboard.MainActivity;
 import com.example.liam.dartscoreboard.R;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 
@@ -81,6 +85,11 @@ public class MainFragment extends Fragment {
     private long pauseOffset;
     private boolean running;
 
+    private TextToSpeech mTTS;
+
+    private Spinner nameSelector1;
+    private Spinner nameSelector2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -121,8 +130,45 @@ public class MainFragment extends Fragment {
 
         leader = view.findViewById(R.id.leader);
 
+        nameSelector1=view.findViewById(R.id.nameSelector1);
+        nameSelector2=view.findViewById(R.id.nameSelector2);
+
         scores.setTotal1(0);
         scores.setTotal2(0);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.names, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nameSelector1.setAdapter(adapter);
+
+        nameSelector1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                player1.setText(nameSelector1.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
+                R.array.names, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nameSelector2.setAdapter(adapter2);
+
+        nameSelector2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                player2.setText(nameSelector2.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         chronometer = view.findViewById(R.id.chronometer);
         chronometer.setFormat("Time: %s");
@@ -133,6 +179,21 @@ public class MainFragment extends Fragment {
                 if ((SystemClock.elapsedRealtime() - chronometer.getBase()) >= 1000000000) {
                     chronometer.setBase(SystemClock.elapsedRealtime());
                 }
+            }
+        });
+
+        mTTS=new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                 if(i== TextToSpeech.SUCCESS){
+                    int result= mTTS.setLanguage(Locale.US);
+                     if(result==TextToSpeech.LANG_MISSING_DATA ||
+                      result==TextToSpeech.LANG_NOT_SUPPORTED){
+                         Log.e("TTS", "Language not supported");
+                     }
+                 }else{
+                     Log.e("TTS", "Failed");
+                 }
             }
         });
 
@@ -162,16 +223,7 @@ public class MainFragment extends Fragment {
 
                         player1score.setText("");
 
-                        if (scores.getTotal1() > scores.getTotal2()) {
-                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                        } else if (scores.getTotal1() == scores.getTotal2()) {
-                            player2layout.setBackgroundColor(Color.GRAY);
-                            player1layout.setBackgroundColor(Color.GRAY);
-                        } else {
-                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                        }
+                        getColors();
                     }
 
                     if (scores.getTotal1() != 0) {
@@ -180,7 +232,9 @@ public class MainFragment extends Fragment {
                     hideKeyboard(getActivity());
 
                     player1scores.setText("" + playerScoresList(player1Array));
-                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+
+                    mTTS.speak(player1Array.get(player1Array.size()-1)+"Deducted and"+scores.getTotal1()+"Left for "+player1.getText(), TextToSpeech.QUEUE_FLUSH, null);
+
 
                 } else {
                     Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
@@ -197,6 +251,7 @@ public class MainFragment extends Fragment {
 
                 final int totalGame = Integer.parseInt(MainActivity.spinner.getSelectedItem().toString());
 
+
                 if (player1Array.size() == player2Array.size()) {
                     total1 = 0;
 
@@ -211,23 +266,14 @@ public class MainFragment extends Fragment {
 
                     player1score.setText("");
 
-                    if (scores.getTotal1() > scores.getTotal2()) {
-                        player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                        player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                    } else if (scores.getTotal1() == scores.getTotal2()) {
-                        player2layout.setBackgroundColor(Color.GRAY);
-                        player1layout.setBackgroundColor(Color.GRAY);
-                    } else {
-                        player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                        player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                    }
+                    getColors();
 
                     player1scores.setText("" + playerScoresList(player1Array));
                     if (scores.getTotal1() != 0) {
 
                         player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                     }
-                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                    mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
 
                 } else {
                     Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
@@ -261,26 +307,19 @@ public class MainFragment extends Fragment {
 
                         player2score.setText("");
 
-                        if (scores.getTotal1() < scores.getTotal2()) {
-                            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                        } else if (scores.getTotal1() == scores.getTotal2()) {
-                            player2layout.setBackgroundColor(Color.GRAY);
-                            player1layout.setBackgroundColor(Color.GRAY);
-                        } else {
-                            player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                            player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                        }
+                        getColors();
+
                     }
 
                     if (scores.getTotal2() != 0) {
 
                         player2scores.setText("" + playerScoresList(player2Array));
                     }
+
                     hideKeyboard(getActivity());
 
                     player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
-                    Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                    mTTS.speak(player2Array.get(player2Array.size()-1)+"Deducted and "+scores.getTotal2()+"Left for "+player2.getText(), TextToSpeech.QUEUE_FLUSH, null);
 
                     leader();
 
@@ -312,16 +351,8 @@ public class MainFragment extends Fragment {
 
                     player2score.setText("");
 
-                    if (scores.getTotal1() < scores.getTotal2()) {
-                        player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                        player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                    } else if (scores.getTotal1() == scores.getTotal2()) {
-                        player2layout.setBackgroundColor(Color.GRAY);
-                        player1layout.setBackgroundColor(Color.GRAY);
-                    } else {
-                        player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
-                        player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
-                    }
+                    getColors();
+
                 }
 
                 player2scores.setText("" + playerScoresList(player2Array));
@@ -330,7 +361,7 @@ public class MainFragment extends Fragment {
                     player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
                 }
 
-                Toast.makeText(getContext(), "Score has been deducted", Toast.LENGTH_SHORT).show();
+                mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
 
                 leader();
             }
@@ -341,8 +372,7 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 total1 = 0;
 
-                if (player1Array.size() != 0) {
-
+                if (player1Array.size() != 0 && player1Array.size()>player2Array.size()) {
                     player1Array.remove(player1Array.size() - 1);
 
                     for (int x : player1Array) {
@@ -357,10 +387,9 @@ public class MainFragment extends Fragment {
                     }
                     player1scores.setText("" + playerScoresList(player1Array));
 
-                    Toast.makeText(getContext(), "Undo success, Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
+                    mTTS.speak("Undo success, now enter the correct score, do it now", TextToSpeech.QUEUE_FLUSH, null);
                 } else {
                     Toast.makeText(getContext(), "Cannot undo because there are no scores present", Toast.LENGTH_LONG).show();
-
                 }
 
 
@@ -382,14 +411,13 @@ public class MainFragment extends Fragment {
 
                     scores.setTotal2(totalGame - total2);
                     player2remain.setText(scores.getTotal2() + "");
-                    if (scores.getTotal1() != 0) {
 
-
+                    if (scores.getTotal2() != 0) {
                         player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
                     }
                     player2scores.setText("" + playerScoresList(player2Array));
 
-                    Toast.makeText(getContext(), "Undo success, Player 1 turn, enter correct score", Toast.LENGTH_LONG).show();
+                    mTTS.speak("Undo success, now enter the correct score, do it now", TextToSpeech.QUEUE_FLUSH, null);
                 } else {
                     Toast.makeText(getContext(), "Cannot undo because there are no scores present", Toast.LENGTH_LONG).show();
 
@@ -412,6 +440,19 @@ public class MainFragment extends Fragment {
         return t;
     }
 
+    public void getColors(){
+        if (scores.getTotal1() < scores.getTotal2()) {
+            player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+            player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
+        } else if (scores.getTotal1() == scores.getTotal2()) {
+            player2layout.setBackgroundColor(Color.GRAY);
+            player1layout.setBackgroundColor(Color.GRAY);
+        } else {
+            player2layout.setBackgroundColor(Color.parseColor("#8BC34A"));
+            player1layout.setBackgroundColor(Color.parseColor("#CF5151"));
+        }
+    }
+
     public void leader() {
         if (total1 > total2) {
             leader.setText(player1.getText() + " Leading by " + (total1 - total2));
@@ -430,24 +471,11 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void pauseChronometer(View v) {
-        if (running) {
-            chronometer.stop();
-            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
-            running = false;
-        }
-    }
-
-    public void resetChronometer(View v) {
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffset = 0;
-    }
-
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
+
         View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
+
         if (view == null) {
             view = new View(activity);
         }

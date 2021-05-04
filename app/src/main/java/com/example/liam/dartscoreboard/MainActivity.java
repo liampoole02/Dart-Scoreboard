@@ -8,36 +8,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
-import android.bluetooth.BluetoothClass;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.example.liam.dartscoreboard.fragments.MainFragment;
 import com.example.liam.dartscoreboard.fragments.CalcFragment;
 import com.example.liam.dartscoreboard.fragments.ThreePlayerfragment;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
