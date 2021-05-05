@@ -31,8 +31,6 @@ public class ThreePlayer extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.three_player);
-
-
     }
 
 

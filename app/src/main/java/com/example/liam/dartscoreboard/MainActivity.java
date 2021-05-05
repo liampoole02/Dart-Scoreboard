@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
-//        totalGame=Integer.parseInt(spinner.getSelectedItem().toString());
+        spinner.setSelection(4);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

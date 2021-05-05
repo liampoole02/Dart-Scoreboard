@@ -50,21 +50,35 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/nameSelector1"
                 android:layout_marginTop="10dp" />
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textAlignment="center"
-                android:hint="Player 1 Name"
-                android:id="@+id/player1"/>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="50dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textAlignment="center"
+                    android:hint="Player 1 Name"
+                    android:id="@+id/player1"/>
+
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/dart"
+                    android:visibility="invisible"
+                    android:src="@drawable/dart"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
@@ -98,6 +112,8 @@
                     android:layout_marginTop="20dp"
                     android:id="@+id/deductZero1" />
 
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,6 +125,7 @@
                 android:background="#000000"
                 android:layout_marginTop="20dp"
                 android:id="@+id/player1remain"/>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -154,6 +171,10 @@
                 android:id="@+id/nameSelector2"
                 android:layout_marginTop="10dp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,6 +184,15 @@
                 android:textStyle="bold"
                 android:hint="Player 2 Name"
                 android:id="@+id/player2" />
+
+            <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/dart2"
+                    android:visibility="invisible"
+                    android:src="@drawable/dart"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

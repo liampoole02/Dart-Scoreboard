@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -90,6 +91,10 @@ public class MainFragment extends Fragment {
     private Spinner nameSelector1;
     private Spinner nameSelector2;
 
+    private ImageView p1;
+    private ImageView p2;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -132,6 +137,9 @@ public class MainFragment extends Fragment {
 
         nameSelector1=view.findViewById(R.id.nameSelector1);
         nameSelector2=view.findViewById(R.id.nameSelector2);
+
+        p1=view.findViewById(R.id.dart);
+        p2=view.findViewById(R.id.dart2);
 
         scores.setTotal1(0);
         scores.setTotal2(0);
@@ -230,7 +238,6 @@ public class MainFragment extends Fragment {
                         player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                     }
                     hideKeyboard(getActivity());
-
                     player1scores.setText("" + playerScoresList(player1Array));
 
                     mTTS.speak(player1Array.get(player1Array.size()-1)+"Deducted and"+scores.getTotal1()+"Left for "+player1.getText(), TextToSpeech.QUEUE_FLUSH, null);
@@ -242,6 +249,7 @@ public class MainFragment extends Fragment {
                 }
 
                 leader();
+                setPlayerTurn();
             }
         });
 
@@ -281,6 +289,7 @@ public class MainFragment extends Fragment {
                 }
 
                 leader();
+                setPlayerTurn();
             }
         });
 
@@ -322,11 +331,11 @@ public class MainFragment extends Fragment {
                     mTTS.speak(player2Array.get(player2Array.size()-1)+"Deducted and "+scores.getTotal2()+"Left for "+player2.getText(), TextToSpeech.QUEUE_FLUSH, null);
 
                     leader();
+                    setPlayerTurn();
 
                 } else {
                     Toast.makeText(getContext(), "Player 1 turn", Toast.LENGTH_SHORT).show();
                     player2score.setText("");
-
                 }
             }
         });
@@ -364,6 +373,7 @@ public class MainFragment extends Fragment {
                 mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
 
                 leader();
+                setPlayerTurn();
             }
         });
 
@@ -423,11 +433,20 @@ public class MainFragment extends Fragment {
 
                 }
 
-
             }
         });
 
         return view;
+    }
+
+    public void setPlayerTurn(){
+        if(player1Array.size()>player2Array.size()){
+            p2.setVisibility(View.VISIBLE);
+            p1.setVisibility(View.INVISIBLE);
+        }else{
+            p1.setVisibility(View.VISIBLE);
+            p2.setVisibility(View.INVISIBLE);
+        }
     }
 
     public String playerScoresList(ArrayList<Integer> a) {

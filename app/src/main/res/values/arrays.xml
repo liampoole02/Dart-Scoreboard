@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="amount">
-        <item>Select amount</item>
         <item>101</item>
         <item>201</item>
         <item>301</item>
