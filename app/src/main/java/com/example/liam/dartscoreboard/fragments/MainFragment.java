@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,10 +28,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.liam.dartscoreboard.Game;
 import com.example.liam.dartscoreboard.MainActivity;
 import com.example.liam.dartscoreboard.R;
+import com.example.liam.dartscoreboard.ThreePlayer;
 
 import org.w3c.dom.Text;
 
@@ -94,7 +97,6 @@ public class MainFragment extends Fragment {
     private ImageView p1;
     private ImageView p2;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -135,11 +137,11 @@ public class MainFragment extends Fragment {
 
         leader = view.findViewById(R.id.leader);
 
-        nameSelector1=view.findViewById(R.id.nameSelector1);
-        nameSelector2=view.findViewById(R.id.nameSelector2);
+        nameSelector1 = view.findViewById(R.id.nameSelector1);
+        nameSelector2 = view.findViewById(R.id.nameSelector2);
 
-        p1=view.findViewById(R.id.dart);
-        p2=view.findViewById(R.id.dart2);
+        p1 = view.findViewById(R.id.dart);
+        p2 = view.findViewById(R.id.dart2);
 
         scores.setTotal1(0);
         scores.setTotal2(0);
@@ -190,18 +192,18 @@ public class MainFragment extends Fragment {
             }
         });
 
-        mTTS=new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+        mTTS = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
-                 if(i== TextToSpeech.SUCCESS){
-                    int result= mTTS.setLanguage(Locale.US);
-                     if(result==TextToSpeech.LANG_MISSING_DATA ||
-                      result==TextToSpeech.LANG_NOT_SUPPORTED){
-                         Log.e("TTS", "Language not supported");
-                     }
-                 }else{
-                     Log.e("TTS", "Failed");
-                 }
+                if (i == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    }
+                } else {
+                    Log.e("TTS", "Failed");
+                }
             }
         });
 
@@ -237,11 +239,18 @@ public class MainFragment extends Fragment {
                     if (scores.getTotal1() != 0) {
                         player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                     }
+
                     hideKeyboard(getActivity());
                     player1scores.setText("" + playerScoresList(player1Array));
 
-                    mTTS.speak(player1Array.get(player1Array.size()-1)+"Deducted and"+scores.getTotal1()+"Left for "+player1.getText(), TextToSpeech.QUEUE_FLUSH, null);
+                    if(player1Array.indexOf(player1Array)!=-1){
+                        mTTS.speak(player1Array.get(player1Array.size() - 1) + "Deducted and" + scores.getTotal1() + "Left for " + player1.getText(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
 
+                    if (scores.getTotal1() == 0) {
+                        Intent myIntent = new Intent(getContext(), ThreePlayer.class);
+                        startActivity(myIntent);
+                    }
 
                 } else {
                     Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
@@ -278,8 +287,10 @@ public class MainFragment extends Fragment {
 
                     player1scores.setText("" + playerScoresList(player1Array));
                     if (scores.getTotal1() != 0) {
-
                         player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                    }
+                    if (scores.getTotal1() == totalGame) {
+                        vid();
                     }
                     mTTS.speak("0 Deducted", TextToSpeech.QUEUE_FLUSH, null);
 
@@ -321,14 +332,22 @@ public class MainFragment extends Fragment {
                     }
 
                     if (scores.getTotal2() != 0) {
-
                         player2scores.setText("" + playerScoresList(player2Array));
                     }
+
+
 
                     hideKeyboard(getActivity());
 
                     player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
-                    mTTS.speak(player2Array.get(player2Array.size()-1)+"Deducted and "+scores.getTotal2()+"Left for "+player2.getText(), TextToSpeech.QUEUE_FLUSH, null);
+                    if(player2Array.indexOf(player2Array)!=-1) {
+
+                        mTTS.speak(player2Array.get(player2Array.size() - 1) + "Deducted and " + scores.getTotal2() + "Left for " + player2.getText(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    if (scores.getTotal2() == 0) {
+                        Intent myIntent = new Intent(getContext(), ThreePlayer.class);
+                        startActivity(myIntent);
+                    }
 
                     leader();
                     setPlayerTurn();
@@ -382,7 +401,7 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 total1 = 0;
 
-                if (player1Array.size() != 0 && player1Array.size()>player2Array.size()) {
+                if (player1Array.size() != 0 && player1Array.size() > player2Array.size()) {
                     player1Array.remove(player1Array.size() - 1);
 
                     for (int x : player1Array) {
@@ -439,11 +458,15 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    public void setPlayerTurn(){
-        if(player1Array.size()>player2Array.size()){
+    public void vid() {
+
+    }
+
+    public void setPlayerTurn() {
+        if (player1Array.size() > player2Array.size()) {
             p2.setVisibility(View.VISIBLE);
             p1.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             p1.setVisibility(View.VISIBLE);
             p2.setVisibility(View.INVISIBLE);
         }
@@ -459,7 +482,7 @@ public class MainFragment extends Fragment {
         return t;
     }
 
-    public void getColors(){
+    public void getColors() {
         if (scores.getTotal1() < scores.getTotal2()) {
             player1layout.setBackgroundColor(Color.parseColor("#8BC34A"));
             player2layout.setBackgroundColor(Color.parseColor("#CF5151"));
