@@ -8,29 +8,50 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:layout_height="93dp"
+        android:layout_weight="0"
         android:background="#000000"
-        android:layout_weight="1">
+        android:gravity="center"
+        android:orientation="vertical">
 
-
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="35dp"
-            android:id="@+id/leader"/>
+            android:layout_weight="0">
 
-        <Chronometer
-            android:id="@+id/chronometer"
+            <TextView
+                android:id="@+id/leader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="35dp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="30sp" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="30sp"
+                android:layout_marginRight="100dp"/>
+
+            <TextView
+                android:id="@+id/turns"
+                android:text="Number of Turns: "
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"/>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -40,243 +61,238 @@
         android:layout_weight="40">
 
         <LinearLayout
+            android:id="@+id/player1layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical"
-            android:id="@+id/player1layout">
+            android:orientation="vertical">
 
             <Spinner
+                android:id="@+id/nameSelector1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nameSelector1"
                 android:layout_marginTop="10dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
+
                 <EditText
+                    android:id="@+id/player1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="50dp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:textAlignment="center"
                     android:hint="Player 1 Name"
-                    android:id="@+id/player1"/>
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="50dp"
+                    android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/dart"
                     android:layout_width="130dp"
                     android:layout_height="100dp"
-                    android:id="@+id/dart"
-                    android:visibility="invisible"
-                    android:src="@drawable/dart"/>
+                    android:src="@drawable/dart"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:layout_marginTop="15dp"
-                android:inputType="number"
-                android:hint="Player 1 Score"
-                android:id="@+id/player1score"
-                />
+                <EditText
+                    android:id="@+id/player1score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"
+                    android:hint="Player 1 Score"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deduct"
-                android:textColor="#FFFFFF"
-                android:background="@android:color/background_dark"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:id="@+id/add1" />
+                <Button
+                    android:id="@+id/add1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@android:color/background_dark"
+                    android:text="Deduct"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Zero"
-                    android:textColor="#FFFFFF"
-                    android:background="#6C545C"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/deductZero1" />
-
-
-
-            <TextView
+            <Button
+                android:id="@+id/deductZero1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Score"
-                android:textSize="65dp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:textAlignment="center"
-                android:background="#000000"
                 android:layout_marginTop="20dp"
-                android:id="@+id/player1remain"/>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Average"
-                    android:textSize="25dp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:textAlignment="center"
-                    android:background="#000000"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/player1average"/>
+                android:background="#6C545C"
+                android:text="Zero"
+                android:textColor="#FFFFFF" />
 
 
             <TextView
+                android:id="@+id/player1remain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#000000"
+                android:hint="Score"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="65dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/player1average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#000000"
+                android:hint="Average"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/player1scores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Scores"
-                android:textSize="30dp"
-                android:textColor="#000000"
                 android:textAlignment="center"
-                android:id="@+id/player1scores"/>
+                android:textColor="#000000"
+                android:textSize="30dp" />
 
             <Button
+                android:id="@+id/undop1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/undop1"
-                android:text="Undo"/>
+                android:text="Undo" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/player2layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:id="@+id/player2layout"
             android:orientation="vertical">
 
             <Spinner
+                android:id="@+id/nameSelector2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nameSelector2"
                 android:layout_marginTop="10dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:textColor="#000000"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:hint="Player 2 Name"
-                android:id="@+id/player2" />
+                android:layout_height="wrap_content">
 
-            <ImageView
+                <EditText
+                    android:id="@+id/player2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Player 2 Name"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="50dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/dart2"
                     android:layout_width="130dp"
                     android:layout_height="100dp"
-                    android:id="@+id/dart2"
-                    android:visibility="invisible"
-                    android:src="@drawable/dart"/>
+                    android:src="@drawable/dart"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:layout_marginTop="15dp"
-                android:inputType="number"
-                android:hint="Player 1 Score"
-                android:id="@+id/player2score"
-                />
+                <EditText
+                    android:id="@+id/player2score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"
+                    android:hint="Player 1 Score"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
 
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deduct"
-                android:textColor="@android:color/background_light"
-                android:background="@android:color/background_dark"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="20dp"
-                android:id="@+id/add2" />
+                <Button
+                    android:id="@+id/add2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@android:color/background_dark"
+                    android:text="Deduct"
+                    android:textColor="@android:color/background_light" />
 
             </LinearLayout>
 
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Zero"
-                    android:textColor="#FFFFFF"
-                    android:background="#6C545C"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/deductZero2"/>
-
-            <TextView
+                android:id="@+id/deductZero2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Score"
-                android:textSize="65dp"
-                android:textStyle="bold"
-                android:background="#000000"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:layout_marginTop="20dp"
-                android:id="@+id/player2remain"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Average"
-                    android:textSize="25dp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:textAlignment="center"
-                    android:background="#000000"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/player2average"/>
+                android:background="#6C545C"
+                android:text="Zero"
+                android:textColor="#FFFFFF" />
 
             <TextView
+                android:id="@+id/player2remain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#000000"
+                android:hint="Score"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="65dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/player2average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#000000"
+                android:hint="Average"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/player2scores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Scores"
-                android:textSize="30dp"
-                android:textColor="#000000"
                 android:textAlignment="center"
-                android:id="@+id/player2scores"/>
+                android:textColor="#000000"
+                android:textSize="30dp" />
 
             <Button
+                android:id="@+id/undop2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/undop2"
-                android:text="Undo"/>
+                android:text="Undo" />
 
         </LinearLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

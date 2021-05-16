@@ -97,6 +97,10 @@ public class MainFragment extends Fragment {
     private ImageView p1;
     private ImageView p2;
 
+    private TextView turns;
+
+    int turn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -105,6 +109,7 @@ public class MainFragment extends Fragment {
 
         scores = new Game();
 
+        turns=view.findViewById(R.id.turns);
         player1 = view.findViewById(R.id.player1);
         player2 = view.findViewById(R.id.player2);
 
@@ -145,6 +150,8 @@ public class MainFragment extends Fragment {
 
         scores.setTotal1(0);
         scores.setTotal2(0);
+
+        turn=0;
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.names, android.R.layout.simple_spinner_item);
@@ -234,23 +241,25 @@ public class MainFragment extends Fragment {
                         player1score.setText("");
 
                         getColors();
-                    }
 
-                    if (scores.getTotal1() != 0) {
-                        player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
-                    }
+                        turn++;
+                        turns.setText("Number of plays: "+turn);
 
-                    hideKeyboard(getActivity());
-                    player1scores.setText("" + playerScoresList(player1Array));
+                        if (scores.getTotal1() != 0) {
+                            player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
+                        }
 
-                    if(player1Array.indexOf(player1Array)!=-1){
+                        hideKeyboard(getActivity());
+                        player1scores.setText("" + playerScoresList(player1Array));
+
                         mTTS.speak(player1Array.get(player1Array.size() - 1) + "Deducted and" + scores.getTotal1() + "Left for " + player1.getText(), TextToSpeech.QUEUE_FLUSH, null);
+
+                        if (scores.getTotal1() == 0) {
+                            Intent myIntent = new Intent(getContext(), ThreePlayer.class);
+                            startActivity(myIntent);
+                        }
                     }
 
-                    if (scores.getTotal1() == 0) {
-                        Intent myIntent = new Intent(getContext(), ThreePlayer.class);
-                        startActivity(myIntent);
-                    }
 
                 } else {
                     Toast.makeText(getContext(), "Player 2 turn", Toast.LENGTH_SHORT).show();
@@ -286,9 +295,11 @@ public class MainFragment extends Fragment {
                     getColors();
 
                     player1scores.setText("" + playerScoresList(player1Array));
+
                     if (scores.getTotal1() != 0) {
                         player1average.setText("Average per turn: " + (totalGame - scores.getTotal1()) / player1Array.size());
                     }
+
                     if (scores.getTotal1() == totalGame) {
                         vid();
                     }
@@ -329,28 +340,25 @@ public class MainFragment extends Fragment {
 
                         getColors();
 
+                        if (scores.getTotal2() != 0) {
+                            player2scores.setText("" + playerScoresList(player2Array));
+                        }
+
+                        hideKeyboard(getActivity());
+
+                        player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
+
+                            mTTS.speak(player2Array.get(player2Array.size() - 1) + "Deducted and " + scores.getTotal2() + "Left for " + player2.getText(), TextToSpeech.QUEUE_FLUSH, null);
+
+                        if (scores.getTotal2() == 0) {
+                            Intent myIntent = new Intent(getContext(), ThreePlayer.class);
+                            startActivity(myIntent);
+                        }
+
+                        leader();
+                        setPlayerTurn();
                     }
 
-                    if (scores.getTotal2() != 0) {
-                        player2scores.setText("" + playerScoresList(player2Array));
-                    }
-
-
-
-                    hideKeyboard(getActivity());
-
-                    player2average.setText("Average per turn: " + (totalGame - scores.getTotal2()) / player2Array.size());
-                    if(player2Array.indexOf(player2Array)!=-1) {
-
-                        mTTS.speak(player2Array.get(player2Array.size() - 1) + "Deducted and " + scores.getTotal2() + "Left for " + player2.getText(), TextToSpeech.QUEUE_FLUSH, null);
-                    }
-                    if (scores.getTotal2() == 0) {
-                        Intent myIntent = new Intent(getContext(), ThreePlayer.class);
-                        startActivity(myIntent);
-                    }
-
-                    leader();
-                    setPlayerTurn();
 
                 } else {
                     Toast.makeText(getContext(), "Player 1 turn", Toast.LENGTH_SHORT).show();
