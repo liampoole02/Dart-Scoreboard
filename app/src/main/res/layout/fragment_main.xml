@@ -282,6 +282,7 @@
                     android:text="Zero"
                     android:textColor="#FFFFFF" />
 
+                
                 <TextView
                     android:id="@+id/player2remain"
                     android:layout_width="wrap_content"
