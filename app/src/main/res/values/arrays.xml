@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="amount">
+        <item>101</item>
+        <item>201</item>
+        <item>301</item>
+        <item>401</item>
+        <item>501</item>
+    </string-array>
+
+    <string-array name="names">
+        <item>Select a name</item>
+        <item>Liam</item>
+        <item>Pa</item>
+        <item>Ma</item>
+        <item>Antu Ticia</item>
+        <item>Neen</item>
+        <item>Mikyle</item>
+
+    </string-array>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/twoplayer"
+        android:title="2 Players"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/threeplayer"
+        android:title="3 Players"
+        app:showAsAction="never"/>
+
+</menu>

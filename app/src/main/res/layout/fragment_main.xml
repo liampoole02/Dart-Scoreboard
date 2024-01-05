@@ -1,0 +1,347 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.MainFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="93dp"
+        android:layout_weight="0"
+        android:background="#000000"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
+
+            <TextView
+                android:id="@+id/leader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="35dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="30sp"
+                android:layout_marginRight="100dp"/>
+
+            <TextView
+                android:id="@+id/turns"
+                android:text="Number of Turns: "
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="40">
+
+        <LinearLayout
+            android:id="@+id/player1mainlayout"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/player1layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/nameSelector1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/player1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Player 1 Name"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="50dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/dart"
+                        android:layout_width="130dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/dart"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/player1score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Player 1 Score"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/add1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@android:color/background_dark"
+                        android:text="Deduct"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/deductZero1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#6C545C"
+                    android:text="Zero"
+                    android:textColor="#FFFFFF" />
+
+
+                <TextView
+                    android:id="@+id/player1remain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#000000"
+                    android:hint="Score"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="65dp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/player1average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#000000"
+                    android:hint="Average"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/undop1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Undo" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/player1scorescrollview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#000000">
+
+                <LinearLayout
+                    android:id="@+id/player1scorelayout"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/player1scores"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Scores"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="35dp" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/player2mainlayout"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/player2layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/nameSelector2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/player2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Player 2 Name"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="50dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/dart2"
+                        android:layout_width="130dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/dart"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/player2score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Player 1 Score"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/add2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@android:color/background_dark"
+                        android:text="Deduct"
+                        android:textColor="@android:color/background_light" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/deductZero2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#6C545C"
+                    android:text="Zero"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/player2remain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#000000"
+                    android:hint="Score"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="65dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/player2average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#000000"
+                    android:hint="Average"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/undop2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Undo" />
+
+                </LinearLayout>
+
+
+            <ScrollView
+                android:id="@+id/player2scorescrollview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#000000">
+
+                <LinearLayout
+                    android:id="@+id/player2scorelayout"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/player2scores"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Scores"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="35dp" />
+                </LinearLayout>
+
+            </ScrollView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
